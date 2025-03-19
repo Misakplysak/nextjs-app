@@ -8,7 +8,7 @@ const Page = () => {
       try {
         const data = await fetch("/api/posts");
         const response = await data.json();
-        setBooks(response.posts);
+        setBooks(response.books);
         console.log(response);
       } catch (error) {
         console.error(error);
