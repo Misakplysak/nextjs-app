@@ -1,49 +1,32 @@
-"use client";
+"use client"
 import { useEffect, useState } from "react";
 
-interface Book {
-  id: number;
-  title: string;
-}
-
 const Page = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
+    const [books, setBooks] = useState<{ title: string }[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/posts");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setBooks(data.posts || []); // Ošetření, kdyby `posts` bylo `undefined`
+        const data = await fetch("/api/posts");
+        const response = await data.json();
+        setBooks(response.posts);
+        console.log(response);
       } catch (error) {
-        console.error("Fetching error:", error);
-      } finally {
-        setLoading(false);
+        console.error(error);
       }
-    };
+    }
     fetchData();
   }, []);
 
   return (
-    <div>
-      <h1>Page</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : books.length > 0 ? (
-        books.map((book) => (
-          <div key={book.id}>
+      <div>
+        <h1>Page</h1>
+        {books.map(book => (
+          <div>
             {book.title}
           </div>
-        ))
-      ) : (
-        <p>No books found.</p>
-      )}
-    </div>
-  );
-};
+        ))}
+      </div>
+    )
+}
 
 export default Page;
