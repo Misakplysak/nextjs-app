@@ -9,8 +9,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "var(--background-color)",
+        secondBackground: "var(--second-background-color)",
+        textColor: "var(--text-color)",
+        blue: "var(--blue)",
+        yellow: "var(--yellow)",
+        shadows: "var(--shadows)",
+        emailButton: "var(--email-button)",
+        widgetTextColor: "var(--widget-text-color)",
+        widgetBackground: "var(--widget-background-color)",
       },
     },
   },
