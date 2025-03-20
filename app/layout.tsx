@@ -1,24 +1,34 @@
-import { NextIntlProvider } from 'next-intl';
-import { notFound } from 'next/navigation';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'sk' }];
-}
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-export default async function RootLayout({ children, params: { locale } }) {
-  let messages;
-  try {
-    messages = (await import(`../locales/${locale}/common.json`)).default;
-  } catch (error) {
-    notFound();
-  }
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
+export const metadata: Metadata = {
+  title: "SQL",
+  description: "Connect SQL database.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlProvider messages={messages} locale={locale} defaultLocale="en">
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
-        </NextIntlProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
