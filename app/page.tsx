@@ -1,32 +1,37 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 
-const Page = () => {
-    const [books, setBooks] = useState<{ title: string }[]>([]);
+interface Book {
+  id: number;
+  title: string;
+  content: string;
+}
+
+export default function HomePage() {
+  const [books, setBooks] = useState<Book[]>([]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetch("/api/posts");
-        const response = await data.json();
-        setBooks(response.books);
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
+    fetch("/api/books")
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error("Error fetching books:", error));
   }, []);
 
   return (
-      <div>
-        <h1>Page</h1>
-        {books.map(book => (
-          <div>
-            {book.title}
-          </div>
-        ))}
-      </div>
-    )
+    <div className="p-4 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Books</h1>
+      {books.length > 0 ? (
+        <ul className="space-y-2">
+          {books.map((book) => (
+            <li key={book.id} className="p-4 border rounded-md shadow-sm">
+              <h2 className="text-lg font-semibold">{book.title}</h2>
+              <p className="text-gray-600">{book.content}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No books found.</p>
+      )}
+    </div>
+  );
 }
-
-export default Page;
